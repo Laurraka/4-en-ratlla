@@ -2,6 +2,7 @@
 #include <stdlib.h>
 
 #define N 8
+#define NIVELL 2
 
 typedef struct node{
      struct node * *fills; //array de fills (pointers a nodes)
@@ -58,37 +59,48 @@ Node* CrearNode(Node *pare, int n_columna){ //cada posició de l'array de fills é
     //Tirem fitxa ordinador
     Tirada(2, n_columna, &(f->tauler[0][0]));
 
-    //if(nivell<2){
-        //f->n_fills=CalculaNumFills(f->tauler);
-        //f->fills=malloc(f->n_fills*sizeof(Node*));
-    //}
-    //else{
-        //No creo fills
-        //f->n_fills=0;
-        //f->fills=NULL;
-    //}
+    //Assignem valor al fill
+    f->valor=3;
+
     return f;
 }
 
-void CrearArbre(Node *arrel){
-    arrel->n_fills=CalculaNumFills(&(arrel->tauler[0][0]));
-    int *columnes_disponibles=malloc((arrel->n_fills)*sizeof(int));
+void CrearNivell(Node *pare, int nivell){
+    nivell++;
+    pare->n_fills=CalculaNumFills(&(pare->tauler[0][0]));
+    int *columnes_disponibles=malloc((pare->n_fills)*sizeof(int));
     int index=0;
     for(int j=0; j<N; j++){
-        if(arrel->tauler[0][j]==0){
+        if(pare->tauler[0][j]==0){
             columnes_disponibles[index]=j+1;
             index++;
         }
     }
 
-    arrel->fills = malloc(arrel->n_fills * sizeof(Node *));
-    for(int i=0; i<arrel->n_fills; i++){
-        arrel->fills[i]=CrearNode(arrel,columnes_disponibles[i]);
-        printf("Tauler despres de tirar el fill %i\n", i+1);
-        ImprimirTauler(&(arrel->fills[i]->tauler[0][0]));
-        free(arrel->fills[i]);
+    pare->fills = malloc(pare->n_fills * sizeof(Node *));
+    for(int i=0; i<pare->n_fills; i++){
+        pare->fills[i]=CrearNode(pare,columnes_disponibles[i]);
+    }
+
+    if(nivell<=NIVELL){
+        for(int i=0; i<pare->n_fills; i++){
+            CrearNivell(pare->fills[i], nivell);
+        }
     }
     return ;
+}
+
+void RecorreArbre(Node *arrel) {
+    int comptador=1;
+    printf("%i-%f\n",comptador,arrel->valor);
+    for(int i=0 ; i<arrel->n_fills ; i++) {
+        comptador++;
+        printf("  %i-%f\n",comptador,arrel->fills[i]->valor);
+        for(int j=0; j<arrel->fills[i]->n_fills ; j++) {
+            comptador++;
+            printf("    %i-%f\n",comptador,arrel->fills[i]->fills[j]->valor);
+        }
+    }
 }
 
 void Torn(int *n_torn, char *tauler){
@@ -108,7 +120,25 @@ void Torn(int *n_torn, char *tauler){
         printf("Torn ordinador\n");
         Node *arrel= malloc(sizeof(Node));
         CopiaTauler(tauler, &(arrel->tauler[0][0]));
-        CrearArbre(arrel);
+        int nivell=0;
+        arrel->valor=2;
+        CrearNivell(arrel, nivell);
+        RecorreArbre(arrel);
+    }
+}
+
+void AlliberarNivell(Node *pare, int nivell){
+    if(nivell<NIVELL-1){
+        for(int i=0; i<pare->n_fills; i++){
+            nivell++;
+            AlliberarNivell(pare->fills[i], nivell);
+        }
+    }
+    else{
+       for(int i=0; i<pare->n_fills; i++){
+            free(pare->fills[i]);
+            nivell--;
+        }
     }
 }
 
