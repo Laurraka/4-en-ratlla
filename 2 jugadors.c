@@ -198,8 +198,6 @@ int main(void)
         }
     }
     printf("Ha guanyat el jugador %i, felicitats !!!!!!!!!!!!", 2-(n_torn+1)%2);
-    //crear l'arrel de l'arbre
-    //Node *arrel= malloc(sizeof(Node));
-    //CrearArbre(arrel);
     return 0;
 }
+
