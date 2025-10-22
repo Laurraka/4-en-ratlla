@@ -1,11 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 
 #define N 8
 #define NIVELL 2
 
 typedef struct node{
-     struct node * *fills; //array de fills (pointers a nodes)
+     struct node * *fills;
      int n_fills;
      char tauler[N][N];
      double valor;
@@ -59,8 +60,8 @@ Node* CrearNode(Node *pare, int n_columna){ //cada posició de l'array de fills é
     //Tirem fitxa ordinador
     Tirada(2, n_columna, &(f->tauler[0][0]));
 
-    //Assignem valor al fill
-    f->valor=3;
+    //Assignem valor al node
+    f->valor=(rand() % 201) - 100;
 
     return f;
 }
@@ -82,7 +83,7 @@ void CrearNivell(Node *pare, int nivell){
         pare->fills[i]=CrearNode(pare,columnes_disponibles[i]);
     }
 
-    if(nivell<=NIVELL){
+    if(nivell<NIVELL){
         for(int i=0; i<pare->n_fills; i++){
             CrearNivell(pare->fills[i], nivell);
         }
@@ -99,6 +100,21 @@ void RecorreArbre(Node *arrel) {
         for(int j=0; j<arrel->fills[i]->n_fills ; j++) {
             comptador++;
             printf("    %i-%f\n",comptador,arrel->fills[i]->fills[j]->valor);
+        }
+    }
+}
+
+void AlliberarNivell(Node *pare, int nivell){
+    nivell++;
+    if(nivell<NIVELL){
+        for(int i=0; i<pare->n_fills; i++){
+            AlliberarNivell(pare->fills[i], nivell);
+            free(pare->fills[i]);
+        }
+    }
+    else{
+        for(int i=0; i<pare->n_fills; i++){
+            free(pare->fills[i]);
         }
     }
 }
@@ -123,22 +139,10 @@ void Torn(int *n_torn, char *tauler){
         int nivell=0;
         arrel->valor=2;
         CrearNivell(arrel, nivell);
-        RecorreArbre(arrel);
-    }
-}
-
-void AlliberarNivell(Node *pare, int nivell){
-    if(nivell<NIVELL-1){
-        for(int i=0; i<pare->n_fills; i++){
-            nivell++;
-            AlliberarNivell(pare->fills[i], nivell);
-        }
-    }
-    else{
-       for(int i=0; i<pare->n_fills; i++){
-            free(pare->fills[i]);
-            nivell--;
-        }
+        int index=MiniMax(arrel);
+        Tirada(2,index+1,tauler);
+        ImprimirTauler(tauler);
+        AlliberarNivell(arrel, nivell);
     }
 }
 
