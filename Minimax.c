@@ -2,15 +2,8 @@
 #include <stdlib.h>
 #include <time.h>
 
-#define N 8
-#define NIVELL 2
-
-typedef struct node{
-     struct node * *fills;
-     int n_fills;
-     char tauler[N][N];
-     double valor;
-} Node;
+#include "Minimax.h"
+#include "main.h"
 
 double min_llista(double *llista, int mida) {
     double min = llista[0];

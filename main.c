@@ -2,15 +2,8 @@
 #include <stdlib.h>
 #include <time.h>
 
-#define N 8
-#define NIVELL 2
-
-typedef struct node{
-     struct node * *fills;
-     int n_fills;
-     char tauler[N][N];
-     double valor;
-} Node;
+#include "Minimax.h"
+#include "main.h"
 
 void ImprimirTauler(char *tauler){
     for(int i=0; i<N; i++){
@@ -61,7 +54,7 @@ Node* CrearNode(Node *pare, int n_columna){ //cada posició de l'array de fills é
     Tirada(2, n_columna, &(f->tauler[0][0]));
 
     //Assignem valor al node
-    f->valor=(rand() % 201) - 100;
+    f->valor=rand();
 
     return f;
 }
@@ -266,6 +259,7 @@ int ComprovPle(char *tauler){
 
 int main(void)
 {
+    srand(time(NULL));
     char *TaulerReal = malloc(N*N*sizeof(char));
     //Omplim de zeros el TaulerReal
     for(int i=0; i<N; i++){
