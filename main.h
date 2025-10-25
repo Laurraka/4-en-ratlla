@@ -1,0 +1,11 @@
+void ImprimirTauler(char *tauler);
+void CopiaTauler(char *origen, char *desti);
+void Tirada(int fitxa, int n_columna, char *tauler);
+void Torn(int *n_torn, char *tauler);
+int Amunt(char *tauler, int recompte, int ValorCasella, int fila, int col);
+int AmuntEsquerra(char *tauler, int recompte, int ValorCasella, int fila, int col);
+int AmuntDreta(char *tauler, int recompte, int ValorCasella, int fila, int col);
+int Esquerra(char *tauler, int recompte, int ValorCasella, int fila, int col);
+int Dreta(char *tauler, int recompte, int ValorCasella, int fila, int col);
+int ComprovGuanyador(char *tauler);
+int ComprovPle(char *tauler);

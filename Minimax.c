@@ -3,6 +3,7 @@
 #include <time.h>
 
 #include "Minimax.h"
+#include "ordinador.h"
 #include "main.h"
 
 double min_llista(double *llista, int mida) {
