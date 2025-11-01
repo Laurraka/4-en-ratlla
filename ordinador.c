@@ -4,6 +4,7 @@
 
 #include "Minimax.h"
 #include "ordinador.h"
+#include "algoritme.h"
 #include "main.h"
 
 int CalculaNumFills(char *tauler){
@@ -17,20 +18,20 @@ int CalculaNumFills(char *tauler){
     return num_fills;
 }
 
-Node* CrearNode(Node *pare, int n_columna){ //cada posició de l'array de fills és un node apuntador
+Node* CrearNode(int nivell, Node *pare, int n_columna, char dificultat){ //cada posició de l'array de fills és un node apuntador
     Node *f=malloc(sizeof(Node));
     CopiaTauler(&(pare->tauler[0][0]),&(f->tauler[0][0]));
 
     //Tirem fitxa ordinador
-    Tirada(2, n_columna, &(f->tauler[0][0]));
+    Tirada(2-((nivell+1)%2), n_columna, &(f->tauler[0][0]));
 
     //Assignem valor al node
-    f->valor=rand();
+    f->valor=algoritme(&(f->tauler[0][0]), dificultat);
 
     return f;
 }
 
-void CrearNivell(Node *pare, int nivell){
+void CrearNivell(Node *pare, int nivell, char dificultat){
     nivell++;
     pare->n_fills=CalculaNumFills(&(pare->tauler[0][0]));
     int *columnes_disponibles=malloc((pare->n_fills)*sizeof(int));
@@ -44,12 +45,12 @@ void CrearNivell(Node *pare, int nivell){
 
     pare->fills = malloc(pare->n_fills * sizeof(Node *));
     for(int i=0; i<pare->n_fills; i++){
-        pare->fills[i]=CrearNode(pare,columnes_disponibles[i]);
+        pare->fills[i]=CrearNode(nivell,pare,columnes_disponibles[i],dificultat);
     }
 
     if(nivell<NIVELL){
         for(int i=0; i<pare->n_fills; i++){
-            CrearNivell(pare->fills[i], nivell);
+            CrearNivell(pare->fills[i], nivell, dificultat);
         }
     }
     return ;
