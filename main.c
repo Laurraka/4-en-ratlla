@@ -4,6 +4,7 @@
 
 #include "Minimax.h"
 #include "ordinador.h"
+#include "algoritme.h"
 #include "main.h"
 
 void ImprimirTauler(char *tauler){
@@ -36,7 +37,7 @@ void Tirada(int fitxa, int n_columna, char *tauler){
     tauler[(n_fila-1)*N+(n_columna-1)]=fitxa;
 }
 
-void Torn(int *n_torn, char *tauler){
+void Torn(int *n_torn, char *tauler, char dificultat){
     if(*n_torn%2==1){ //Torn persona (jugador 1)
         printf("A quina columna vols tirar?");
         int n_columna;
@@ -55,8 +56,9 @@ void Torn(int *n_torn, char *tauler){
         CopiaTauler(tauler, &(arrel->tauler[0][0]));
         int nivell=0;
         arrel->valor=2;
-        CrearNivell(arrel, nivell);
+        CrearNivell(arrel, nivell, dificultat);
         int index=MiniMax(arrel);
+        RecorreArbre(arrel);
         Tirada(2,index+1,tauler);
         ImprimirTauler(tauler);
         AlliberarNivell(arrel, nivell);
@@ -64,18 +66,13 @@ void Torn(int *n_torn, char *tauler){
 }
 
 int Amunt(char *tauler, int recompte, int ValorCasella, int fila, int col){
-    if(0<fila){
-        if(ValorCasella!=0 && tauler[(fila-1)*N+col]==ValorCasella){
-            recompte++;
-            Amunt(tauler, recompte, tauler[(fila-1)*N+col], fila-1, col);
-        }
-        else if(recompte==4){
-            printf("4 en linia\n");
-            return 1;
-        }
-        else{
-            return 0;
-        }
+    if(fila-1>=0 && ValorCasella!=0 && tauler[(fila-1)*N+col]==ValorCasella && recompte<4){
+        recompte++;
+        Amunt(tauler, recompte, tauler[(fila-1)*N+col], fila-1, col);
+    }
+    else if(recompte==4){
+        printf("4 en linia\n");
+        return 1;
     }
     else{
         return 0;
@@ -83,18 +80,13 @@ int Amunt(char *tauler, int recompte, int ValorCasella, int fila, int col){
 }
 
 int AmuntEsquerra(char *tauler, int recompte, int ValorCasella, int fila, int col){
-    if(0<fila && 0<col){
-        if(ValorCasella!=0 && tauler[(fila-1)*N+(col-1)]==ValorCasella){
-            recompte++;
-            AmuntEsquerra(tauler, recompte, tauler[(fila-1)*N+(col-1)], fila-1, col-1);
-        }
-        else if(recompte==4){
-            printf("4 en linia\n");
-            return 1;
-        }
-        else{
-            return 0;
-        }
+    if(fila-1>=0 && col-1>=0 && ValorCasella!=0 && tauler[(fila-1)*N+(col-1)]==ValorCasella && recompte<4){
+        recompte++;
+        AmuntEsquerra(tauler, recompte, tauler[(fila-1)*N+(col-1)], fila-1, col-1);
+    }
+    else if(recompte==4){
+        printf("4 en linia\n");
+        return 1;
     }
     else{
         return 0;
@@ -102,37 +94,13 @@ int AmuntEsquerra(char *tauler, int recompte, int ValorCasella, int fila, int co
 }
 
 int AmuntDreta(char *tauler, int recompte, int ValorCasella, int fila, int col){
-    if(0<fila && col<N){
-        if(ValorCasella!=0 && tauler[(fila-1)*N+(col+1)]==ValorCasella){
-            recompte++;
-            AmuntDreta(tauler, recompte, tauler[(fila-1)*N+(col+1)], fila-1, col+1);
-        }
-        else if(recompte==4){
-            printf("4 en linia\n");
-            return 1;
-        }
-        else{
-            return 0;
-        }
+    if(fila-1>=0 && col+1<N && ValorCasella!=0 && tauler[(fila-1)*N+(col+1)]==ValorCasella && recompte<4){
+        recompte++;
+        AmuntDreta(tauler, recompte, tauler[(fila-1)*N+(col+1)], fila-1, col+1);
     }
-    else{
-        return 0;
-    }
-}
-
-int Esquerra(char *tauler, int recompte, int ValorCasella, int fila, int col){
-    if(0<col){
-        if(ValorCasella!=0 && tauler[fila*N+(col-1)]==ValorCasella){
-            recompte++;
-            Esquerra(tauler, recompte, tauler[fila*N+(col-1)], fila, col-1);
-        }
-        else if(recompte==4){
-            printf("4 en linia\n");
-            return 1;
-        }
-        else{
-            return 0;
-        }
+    else if(recompte==4){
+        printf("4 en linia\n");
+        return 1;
     }
     else{
         return 0;
@@ -140,18 +108,13 @@ int Esquerra(char *tauler, int recompte, int ValorCasella, int fila, int col){
 }
 
 int Dreta(char *tauler, int recompte, int ValorCasella, int fila, int col){
-    if(0<col){
-        if(ValorCasella!=0 && tauler[fila*N+(col+1)]==ValorCasella){
-            recompte++;
-            Dreta(tauler, recompte, tauler[fila*N+(col+1)], fila, col+1);
-        }
-        else if(recompte==4){
-            printf("4 en linia\n");
-            return 1;
-        }
-        else{
-            return 0;
-        }
+    if(col+1<N && ValorCasella!=0 && tauler[(fila)*N+(col+1)]==ValorCasella && recompte<4){
+        recompte++;
+        Dreta(tauler, recompte, tauler[(fila)*N+(col+1)], fila, col+1);
+    }
+    else if(recompte==4){
+        printf("4 en linia\n");
+        return 1;
     }
     else{
         return 0;
@@ -163,8 +126,8 @@ int ComprovGuanyador(char *tauler){
         for(int j=0; j<N; j++){
             int recompte;
             recompte=1;
-            if(Amunt(tauler,recompte,tauler[i*N+j], i, j)==1 || AmuntEsquerra(tauler,recompte,tauler[i*N+j], i, j)==1 || AmuntDreta(tauler,recompte,tauler[i*N+j], i, j)==1 ||
-               Esquerra(tauler,recompte,tauler[i*N+j], i, j)==1 || Dreta(tauler,recompte,tauler[i*N+j], i, j)==1){
+            if(Amunt(tauler,recompte,tauler[i*N+j], i, j)==1 || AmuntEsquerra(tauler,recompte,tauler[i*N+j], i, j)==1
+               || AmuntDreta(tauler,recompte,tauler[i*N+j], i, j)==1 || Dreta(tauler,recompte,tauler[i*N+j], i, j)==1){
                 return 1;
             }
         }
@@ -184,7 +147,21 @@ int ComprovPle(char *tauler){
 int main(void)
 {
     srand(time(NULL));
+    printf("En quina dificultat vols jugar? Facil, mitjana o dificil? (f/m/d):");
+    char dificultat;
+    scanf("%c", &dificultat);
+
     char *TaulerReal = malloc(N*N*sizeof(char));
+
+    FILE *fitxer;
+    //fitxer = fopen("tauler_artificial.txt", "r");
+    //for(int i=0; i<N; i++) {
+        //for(int j=0; j<N; j++) {
+            //fscanf(fitxer, "%i", &TaulerReal[i*N+j]);
+        //}
+    //}
+    //fclose(fitxer);
+
     //Omplim de zeros el TaulerReal
     for(int i=0; i<N; i++){
         for(int j=0; j<N; j++){
@@ -199,7 +176,7 @@ int main(void)
             printf("Empat\n");
         }
         else{
-            Torn(&n_torn, TaulerReal);
+            Torn(&n_torn, TaulerReal, dificultat);
             n_torn++;
         }
     }
