@@ -14,7 +14,7 @@ int algoritme(char *tauler, char dificultat){
         return algoritme_mitja(tauler);
     }
     else if(dificultat=='d'){
-        return 2;
+        return algoritme_dificil(tauler);
     }
 }
 
@@ -22,6 +22,157 @@ int algoritme_mitja(char *tauler){
     if (OrdinadorGuanyador(tauler)==1) return 1000;
     else if(RivalGuanyador(tauler)==1) return -1000;
     else return (rand() % 1999) - 999;
+}
+
+int algoritme_dificil(char *tauler){
+    if (OrdinadorGuanyador(tauler)==1) return 1000;
+    else if(RivalGuanyador(tauler)==1) return -1000;
+    else return Puntuacio(tauler);
+}
+
+int Puntuacio(char *tauler){
+    char *Caselles=malloc(N*N*sizeof(char));
+    //Omplir caselles de 0's
+    for(int i=0; i<N; i++){
+        for(int j=0; j<N; j++){
+            Caselles[i*N+j]=0;
+        }
+    }
+
+    int recompte=1;
+    int resta=0;
+
+    //RIVAL AMUNT
+    for(int i=N-1; 0<=i; i--){
+        for(int j=0; j<N; j++){
+            if(tauler[i*N+j]==1 && Caselles[i*N+j]!=-1){
+                resta=resta-Puntuacio_Amunt(tauler, Caselles, recompte, 1, i, j);
+            }
+        }
+    }
+    //Omplir caselles de 0's
+    for(int i=0; i<N; i++){
+        for(int j=0; j<N; j++){
+            Caselles[i*N+j]=0;
+        }
+    }
+
+    //RIVAL AMUNT ESQUERRA
+    for(int i=N-1; 0<=i; i--){
+        for(int j=0; j<N; j++){
+            if(tauler[i*N+j]==1 && Caselles[i*N+j]!=-1){
+                resta=resta-Puntuacio_Amunt_Esquerra(tauler, Caselles, recompte, 1, i, j);
+            }
+        }
+    }
+    //Omplir caselles de 0's
+    for(int i=0; i<N; i++){
+        for(int j=0; j<N; j++){
+            Caselles[i*N+j]=0;
+        }
+    }
+
+    //RIVAL AMUNT DRETA
+    for(int i=N-1; 0<=i; i--){
+        for(int j=0; j<N; j++){
+            if(tauler[i*N+j]==1 && Caselles[i*N+j]!=-1){
+                resta=resta-Puntuacio_Amunt_Dreta(tauler, Caselles, recompte, 1, i, j);
+            }
+        }
+    }
+    //Omplir caselles de 0's
+    for(int i=0; i<N; i++){
+        for(int j=0; j<N; j++){
+            Caselles[i*N+j]=0;
+        }
+    }
+
+    int suma=0;
+    return resta;
+}
+
+int Puntuacio_Amunt(char *tauler, char *Caselles, int recompte, int ValorCasella, int fila, int col){
+    Caselles[fila*N+col]=-1;
+    if(fila-1>=0 && tauler[(fila-1)*N+col]==ValorCasella && Caselles[(fila-1)*N+col]!=-1){
+        recompte++;
+        Puntuacio_Amunt(tauler, Caselles, recompte, tauler[(fila-1)*N+col], fila-1, col);
+    }
+    else{
+        if(tauler[(fila-1)*N+col]!=0 || recompte==1){
+            return 0;
+        }
+        else{
+            if(recompte==2){
+                return 1;
+            }
+            else{
+                return 3;
+            }
+        }
+    }
+}
+
+int Puntuacio_Amunt_Esquerra(char *tauler, char *Caselles, int recompte, int ValorCasella, int fila, int col){
+    Caselles[fila*N+col]=-1;
+    if(fila-1>=0 && (col-1)>=0 && tauler[(fila-1)*N+col-1]==ValorCasella && Caselles[(fila-1)*N+col-1]!=-1){
+        recompte++;
+        Puntuacio_Amunt_Esquerra(tauler, Caselles, recompte, tauler[(fila-1)*N+col-1], fila-1, col-1);
+    }
+    else{
+        if(tauler[(fila-1)*N+col-1]!=0 || recompte==1){
+            return 0;
+        }
+        else{
+            if(recompte==2){
+                return 1;
+            }
+            else{
+                return 3;
+            }
+        }
+    }
+}
+
+int Puntuacio_Amunt_Dreta(char *tauler, char *Caselles, int recompte, int ValorCasella, int fila, int col){
+    Caselles[fila*N+col]=-1;
+    if(fila-1>=0 && (col+1)<N && tauler[(fila-1)*N+col+1]==ValorCasella && Caselles[(fila-1)*N+col+1]!=-1){
+        recompte++;
+        Puntuacio_Amunt_Dreta(tauler, Caselles, recompte, tauler[(fila-1)*N+col+1], fila-1, col+1);
+    }
+    else{
+        if(tauler[(fila-1)*N+col+1]!=0 || recompte==1){
+            return 0;
+        }
+        else{
+            if(recompte==2){
+                return 1;
+            }
+            else{
+                return 3;
+            }
+        }
+    }
+}
+
+int Puntuacio_Dreta(char *tauler, char *Caselles, int recompte, int ValorCasella, int fila, int col){
+    Caselles[fila*N+col]=-1;
+    if((col+1)<N && tauler[(fila)*N+col+1]==ValorCasella && Caselles[(fila)*N+col+1]!=-1){
+        recompte++;
+        Puntuacio_Dreta(tauler, Caselles, recompte, tauler[(fila)*N+col+1], fila, col+1);
+    }
+    else{
+        if(tauler[(fila)*N+col+1]!=0 || recompte==1){
+            return 0;
+        }
+        else{
+            if(recompte==2){
+                return 1;
+            }
+            else{
+                return 3;
+            }
+        }
+    }
 }
 
 int OrdinadorGuanyador(char *tauler){

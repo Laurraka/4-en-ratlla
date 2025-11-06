@@ -58,6 +58,7 @@ void Torn(int *n_torn, char *tauler, char dificultat){
         arrel->valor=2;
         CrearNivell(arrel, nivell, dificultat);
         int index=MiniMax(arrel);
+        RecorreArbre(arrel);
         Tirada(2,index+1,tauler);
         ImprimirTauler(tauler);
         AlliberarNivell(arrel, nivell);
@@ -153,20 +154,20 @@ int main(void)
     char *TaulerReal = malloc(N*N*sizeof(char));
 
     FILE *fitxer;
-    //fitxer = fopen("tauler_artificial.txt", "r");
-    //for(int i=0; i<N; i++) {
-        //for(int j=0; j<N; j++) {
-            //fscanf(fitxer, "%i", &TaulerReal[i*N+j]);
-        //}
-    //}
-    //fclose(fitxer);
-
-    //Omplim de zeros el TaulerReal
-    for(int i=0; i<N; i++){
-        for(int j=0; j<N; j++){
-            TaulerReal[i*N+j]=0;
+    fitxer = fopen("tauler_artificial.txt", "r");
+    for(int i=0; i<N; i++) {
+        for(int j=0; j<N; j++) {
+            fscanf(fitxer, "%i", &(TaulerReal[i*N+j]));
         }
     }
+    fclose(fitxer);
+
+    //Omplim de zeros el TaulerReal
+    //for(int i=0; i<N; i++){
+        //for(int j=0; j<N; j++){
+            //TaulerReal[i*N+j]=0;
+        //}
+    //}
     ImprimirTauler(TaulerReal);
     int n_torn;
     n_torn=1;

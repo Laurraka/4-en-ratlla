@@ -1,5 +1,11 @@
 int algoritme(char *tauler, char dificultat);
 int algoritme_mitja(char *tauler);
+int algoritme_dificil(char *tauler);
+int Puntuacio(char *tauler);
+int Puntuacio_Amunt(char *tauler, char *Caselles, int recompte, int ValorCasella, int fila, int col);
+int Puntuacio_Amunt_Esquerra(char *tauler, char *Caselles, int recompte, int ValorCasella, int fila, int col);
+int Puntuacio_Amunt_Dreta(char *tauler, char *Caselles, int recompte, int ValorCasella, int fila, int col);
+int Puntuacio_Dreta(char *tauler, char *Caselles, int recompte, int ValorCasella, int fila, int col);
 int OrdinadorGuanyador(char *tauler);
 int RivalGuanyador(char *tauler);
 int AmuntAlgoritme(char *tauler, int recompte, int ValorCasella, int fila, int col);
