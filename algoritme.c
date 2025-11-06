@@ -19,8 +19,26 @@ int algoritme(char *tauler, char dificultat){
 }
 
 int algoritme_mitja(char *tauler){
-    if(RivalGuanyador(tauler)==1) return -1000;
+    if (OrdinadorGuanyador(tauler)==1) return 1000;
+    else if(RivalGuanyador(tauler)==1) return -1000;
     else return (rand() % 1999) - 999;
+}
+
+int OrdinadorGuanyador(char *tauler){
+    for(int i=N-1; 0<=i; i--){
+        for(int j=0; j<N; j++){
+            int recompte;
+            recompte=1;
+            if(tauler[i*N+j]==2){
+                if(AmuntAlgoritme(tauler,recompte,2, i, j)==1 || AmuntEsquerraAlgoritme(tauler,recompte,2, i, j)==1 ||
+                    AmuntDretaAlgoritme(tauler,recompte,2, i, j)==1 || DretaAlgoritme(tauler,recompte,2, i, j)==1){
+                    return 1;
+                }
+
+            }
+        }
+    }
+    return 0;
 }
 
 int RivalGuanyador(char *tauler){

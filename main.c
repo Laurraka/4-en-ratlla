@@ -58,7 +58,6 @@ void Torn(int *n_torn, char *tauler, char dificultat){
         arrel->valor=2;
         CrearNivell(arrel, nivell, dificultat);
         int index=MiniMax(arrel);
-        RecorreArbre(arrel);
         Tirada(2,index+1,tauler);
         ImprimirTauler(tauler);
         AlliberarNivell(arrel, nivell);
