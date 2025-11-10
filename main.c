@@ -19,6 +19,10 @@ void ImprimirTauler(char *tauler){
         }
         printf("\n");
     }
+    for(int i=0; i<N; i++){
+        printf(" %i", i+1);
+    }
+    printf("\n");
 }
 
 void CopiaTauler(char *origen, char *desti){
@@ -146,17 +150,19 @@ int ComprovPle(char *tauler){
 int main(void)
 {
     srand(time(NULL));
+    printf("JOC DEL 4 EN RATLLA\n");
+    printf("Aquest es un programa per jugar contra l'ordinador al 4 en ratlla. El jugador huma estara representat amb les fitxes '1', mentre que les fitxes de l'ordinador es denotaran com '2'.\n");
     printf("En quina dificultat vols jugar? Facil, mitjana o dificil? (f/m/d):");
     char dificultat;
     scanf("%c", &dificultat);
 
     char *TaulerReal = malloc(N*N*sizeof(char));
 
-    FILE *fitxer;
+    //FILE *fitxer;
     //fitxer = fopen("tauler_artificial.txt", "r");
     //for(int i=0; i<N; i++) {
         //for(int j=0; j<N; j++) {
-            //fscanf(fitxer, "%i", &TaulerReal[i*N+j]);
+            //fscanf(fitxer, "%i", &(TaulerReal[i*N+j]));
         //}
     //}
     //fclose(fitxer);

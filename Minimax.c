@@ -55,9 +55,16 @@ int MiniMax(Node *arrel){
 
     //Seleccionem columna amb la puntuació més alta
     int index=0;
-    for (int i=1; i<arrel->n_fills; i++) {
-        if (arrel->fills[i]->valor > arrel->fills[index]->valor) {
-            index=i;
+    for(int i=1; i<arrel->n_fills; i++) {
+        if (arrel->fills[i]->valor>=arrel->fills[index]->valor) {
+            if(arrel->fills[i]->valor==arrel->fills[index]->valor){
+                if(abs(N/2-index)>abs(N/2-i)){
+                    index=i;
+                }
+            }
+            else{
+                index=i;
+            }
         }
     }
     return index;
