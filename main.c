@@ -62,7 +62,7 @@ void Torn(int *n_torn, char *tauler, char dificultat){
         arrel->valor=2;
         CrearNivell(arrel, nivell, dificultat);
         int index=MiniMax(arrel);
-        Tirada(2,index+1,tauler);
+        Tirada(2,index,tauler);
         ImprimirTauler(tauler);
         AlliberarNivell(arrel, nivell);
     }
@@ -71,7 +71,7 @@ void Torn(int *n_torn, char *tauler, char dificultat){
 int Amunt(char *tauler, int recompte, int ValorCasella, int fila, int col){
     if(fila-1>=0 && ValorCasella!=0 && tauler[(fila-1)*N+col]==ValorCasella && recompte<4){
         recompte++;
-        Amunt(tauler, recompte, tauler[(fila-1)*N+col], fila-1, col);
+        return Amunt(tauler, recompte, tauler[(fila-1)*N+col], fila-1, col);
     }
     else if(recompte==4){
         printf("4 en linia\n");
@@ -85,7 +85,7 @@ int Amunt(char *tauler, int recompte, int ValorCasella, int fila, int col){
 int AmuntEsquerra(char *tauler, int recompte, int ValorCasella, int fila, int col){
     if(fila-1>=0 && col-1>=0 && ValorCasella!=0 && tauler[(fila-1)*N+(col-1)]==ValorCasella && recompte<4){
         recompte++;
-        AmuntEsquerra(tauler, recompte, tauler[(fila-1)*N+(col-1)], fila-1, col-1);
+        return AmuntEsquerra(tauler, recompte, tauler[(fila-1)*N+(col-1)], fila-1, col-1);
     }
     else if(recompte==4){
         printf("4 en linia\n");
@@ -99,7 +99,7 @@ int AmuntEsquerra(char *tauler, int recompte, int ValorCasella, int fila, int co
 int AmuntDreta(char *tauler, int recompte, int ValorCasella, int fila, int col){
     if(fila-1>=0 && col+1<N && ValorCasella!=0 && tauler[(fila-1)*N+(col+1)]==ValorCasella && recompte<4){
         recompte++;
-        AmuntDreta(tauler, recompte, tauler[(fila-1)*N+(col+1)], fila-1, col+1);
+        return AmuntDreta(tauler, recompte, tauler[(fila-1)*N+(col+1)], fila-1, col+1);
     }
     else if(recompte==4){
         printf("4 en linia\n");
@@ -113,7 +113,7 @@ int AmuntDreta(char *tauler, int recompte, int ValorCasella, int fila, int col){
 int Dreta(char *tauler, int recompte, int ValorCasella, int fila, int col){
     if(col+1<N && ValorCasella!=0 && tauler[(fila)*N+(col+1)]==ValorCasella && recompte<4){
         recompte++;
-        Dreta(tauler, recompte, tauler[(fila)*N+(col+1)], fila, col+1);
+        return Dreta(tauler, recompte, tauler[(fila)*N+(col+1)], fila, col+1);
     }
     else if(recompte==4){
         printf("4 en linia\n");

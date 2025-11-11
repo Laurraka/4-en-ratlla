@@ -67,5 +67,21 @@ int MiniMax(Node *arrel){
             }
         }
     }
-    return index;
+
+    int n_col=0;
+    int i=0;
+    int j=0;
+    while(i<index){
+        if(arrel->tauler[0][j]==0){
+            i++;
+            n_col++;
+            j++;
+        }
+        else{
+            n_col++;
+            j++;
+        }
+    }
+
+    return n_col;
 }
