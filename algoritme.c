@@ -170,7 +170,7 @@ int Puntuacio_Amunt(char *tauler, char *Caselles, int recompte, int ValorCasella
     Caselles[fila*N+col]=-1;
     if(fila-1>=0 && tauler[(fila-1)*N+col]==ValorCasella && Caselles[(fila-1)*N+col]!=-1){
         recompte++;
-        Puntuacio_Amunt(tauler, Caselles, recompte, tauler[(fila-1)*N+col], fila-1, col);
+        return Puntuacio_Amunt(tauler, Caselles, recompte, tauler[(fila-1)*N+col], fila-1, col);
     }
     else{
         if(tauler[(fila-1)*N+col]!=0 || recompte==1){
@@ -191,7 +191,7 @@ int Puntuacio_Amunt_Esquerra(char *tauler, char *Caselles, int recompte, int Val
     Caselles[fila*N+col]=-1;
     if(fila-1>=0 && (col-1)>=0 && tauler[(fila-1)*N+col-1]==ValorCasella && Caselles[(fila-1)*N+col-1]!=-1){
         recompte++;
-        Puntuacio_Amunt_Esquerra(tauler, Caselles, recompte, tauler[(fila-1)*N+col-1], fila-1, col-1);
+        return Puntuacio_Amunt_Esquerra(tauler, Caselles, recompte, tauler[(fila-1)*N+col-1], fila-1, col-1);
     }
     else{
         if(tauler[(fila-1)*N+col-1]!=0 || recompte==1){
@@ -212,7 +212,7 @@ int Puntuacio_Amunt_Dreta(char *tauler, char *Caselles, int recompte, int ValorC
     Caselles[fila*N+col]=-1;
     if(fila-1>=0 && (col+1)<N && tauler[(fila-1)*N+col+1]==ValorCasella && Caselles[(fila-1)*N+col+1]!=-1){
         recompte++;
-        Puntuacio_Amunt_Dreta(tauler, Caselles, recompte, tauler[(fila-1)*N+col+1], fila-1, col+1);
+        return Puntuacio_Amunt_Dreta(tauler, Caselles, recompte, tauler[(fila-1)*N+col+1], fila-1, col+1);
     }
     else{
         if(tauler[(fila-1)*N+col+1]!=0 || recompte==1){
@@ -233,7 +233,7 @@ int Puntuacio_Dreta(char *tauler, char *Caselles, int recompte, int ValorCasella
     Caselles[fila*N+col]=-1;
     if((col+1)<N && tauler[(fila)*N+col+1]==ValorCasella && Caselles[(fila)*N+col+1]!=-1){
         recompte++;
-        Puntuacio_Dreta(tauler, Caselles, recompte, tauler[(fila)*N+col+1], fila, col+1);
+        return Puntuacio_Dreta(tauler, Caselles, recompte, tauler[(fila)*N+col+1], fila, col+1);
     }
     else{
         if(tauler[(fila)*N+col+1]!=0 || recompte==1){
@@ -287,7 +287,7 @@ int RivalGuanyador(char *tauler){
 int DretaAlgoritme(char *tauler, int recompte, int ValorCasella, int fila, int col){
     if((col+1)<N && ValorCasella!=0 && tauler[(fila)*N+col+1]==ValorCasella && recompte<4){
         recompte++;
-        DretaAlgoritme(tauler, recompte, tauler[(fila)*N+col+1], fila, col+1);
+        return DretaAlgoritme(tauler, recompte, tauler[(fila)*N+col+1], fila, col+1);
     }
     else if(recompte==4){
         return 1;
@@ -300,7 +300,7 @@ int DretaAlgoritme(char *tauler, int recompte, int ValorCasella, int fila, int c
 int AmuntAlgoritme(char *tauler, int recompte, int ValorCasella, int fila, int col){
     if(fila-1>=0 && ValorCasella!=0 && tauler[(fila-1)*N+col]==ValorCasella && recompte<4){
         recompte++;
-        AmuntAlgoritme(tauler, recompte, tauler[(fila-1)*N+col], fila-1, col);
+        return AmuntAlgoritme(tauler, recompte, tauler[(fila-1)*N+col], fila-1, col);
     }
     else if(recompte==4){
         return 1;
@@ -313,7 +313,7 @@ int AmuntAlgoritme(char *tauler, int recompte, int ValorCasella, int fila, int c
 int AmuntEsquerraAlgoritme(char *tauler, int recompte, int ValorCasella, int fila, int col){
     if(fila-1>=0 && (col-1)>=0 && ValorCasella!=0 && tauler[(fila-1)*N+(col-1)]==ValorCasella && recompte<4){
         recompte++;
-        AmuntEsquerraAlgoritme(tauler, recompte, tauler[(fila-1)*N+(col-1)], fila-1, col-1);
+        return AmuntEsquerraAlgoritme(tauler, recompte, tauler[(fila-1)*N+(col-1)], fila-1, col-1);
     }
     else if(recompte==4){
         return 1;
@@ -326,7 +326,7 @@ int AmuntEsquerraAlgoritme(char *tauler, int recompte, int ValorCasella, int fil
 int AmuntDretaAlgoritme(char *tauler, int recompte, int ValorCasella, int fila, int col){
     if(fila-1>=0 && (col+1)<N && ValorCasella!=0 && tauler[(fila-1)*N+(col+1)]==ValorCasella && recompte<4){
         recompte++;
-        AmuntDretaAlgoritme(tauler, recompte, tauler[(fila-1)*N+(col+1)], fila-1, col+1);
+        return AmuntDretaAlgoritme(tauler, recompte, tauler[(fila-1)*N+(col+1)], fila-1, col+1);
     }
     else if(recompte==4){
         return 1;
